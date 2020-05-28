@@ -70,7 +70,7 @@ func main() {
 
 	err := tr.WithSpan(ctx, "say hello",
 		func(ctx context.Context) error {
-			req, _ := http.NewRequest("GET", "http://localhost:7777/hello", nil)
+			req, _ := http.NewRequest("GET", "http://104.154.145.107:7777/hello", nil)
 
 			ctx, req = httptrace.W3C(ctx, req)
 			httptrace.Inject(ctx, req)
