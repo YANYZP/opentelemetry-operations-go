@@ -73,7 +73,7 @@ func main() {
 
 		span.AddEvent(ctx, "handling this...")
 
-		_, _ = io.WriteString(w, "Hello, "+ingredientName+" !\n")
+		_, _ = io.WriteString(w, "Searching "+ingredientName+"\n")
 	}
 
 	http.HandleFunc("/", urlHandler)

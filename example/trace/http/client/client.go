@@ -22,7 +22,6 @@ import (
 	"os"
 
 	"net/http"
-	"time"
 
 	"google.golang.org/grpc/codes"
 
@@ -68,14 +67,14 @@ func main() {
 
 	var body []byte
 
-	err := tr.WithSpan(ctx, "say hello",
+	err := tr.WithSpan(ctx, "service B",
 		func(ctx context.Context) error {
-			req, _ := http.NewRequest("GET", "http://104.154.145.107:7777/hello", nil)
+			req, _ := http.NewRequest("GET", "http://104.154.145.107:7777/milk", nil)
 
 			ctx, req = httptrace.W3C(ctx, req)
 			httptrace.Inject(ctx, req)
 
-			fmt.Printf("Sending request...\n")
+			fmt.Printf("Sending request to Service B ...\n")
 			res, err := client.Do(req)
 			if err != nil {
 				panic(err)
@@ -93,6 +92,34 @@ func main() {
 
 	fmt.Printf("Response Received: %s\n\n\n", body)
 	fmt.Printf("Waiting for few seconds to export spans ...\n\n")
-	time.Sleep(10 * time.Second)
+	// time.Sleep(10 * time.Second)
 	fmt.Println("Check traces on Google Cloud Trace")
+
+	err := tr.WithSpan(ctx, "service C",
+		func(ctx context.Context) error {
+			req, _ := http.NewRequest("GET", "http://104.154.145.107:7777/hello", nil)
+
+			ctx, req = httptrace.W3C(ctx, req)
+			httptrace.Inject(ctx, req)
+
+			fmt.Printf("Sending request to Service C ...\n")
+			res, err := client.Do(req)
+			if err != nil {
+				panic(err)
+			}
+			body, err = ioutil.ReadAll(res.Body)
+			_ = res.Body.Close()
+			trace.SpanFromContext(ctx).SetStatus(codes.OK, "")
+
+			return err
+		})
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Response Received: %s\n\n\n", body)
+	fmt.Printf("Waiting for few seconds to export spans ...\n\n")
+	fmt.Println("Check traces on Google Cloud Trace")
+
 }
