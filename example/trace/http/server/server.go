@@ -55,8 +55,10 @@ func main() {
 
 	tr := global.TraceProvider().Tracer("cloudtrace/example/server")
 
-	helloHandler := func(w http.ResponseWriter, req *http.Request) {
+	urlHandler := func(w http.ResponseWriter, req *http.Request) {
 		attrs, entries, spanCtx := httptrace.Extract(req.Context(), req)
+
+		ingredientName := req.URL.Path[1:]
 
 		req = req.WithContext(correlation.ContextWithMap(req.Context(), correlation.NewMap(correlation.MapUpdate{
 			MultiKV: entries,
@@ -71,10 +73,10 @@ func main() {
 
 		span.AddEvent(ctx, "handling this...")
 
-		_, _ = io.WriteString(w, "Hello, world!\n")
+		_, _ = io.WriteString(w, "Hello, "+ingredientName+" !\n")
 	}
 
-	http.HandleFunc("/hello", helloHandler)
+	http.HandleFunc("/", urlHandler)
 	err := http.ListenAndServe(":7777", nil)
 	if err != nil {
 		panic(err)
