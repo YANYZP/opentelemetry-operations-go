@@ -95,7 +95,7 @@ func main() {
 	// time.Sleep(10 * time.Second)
 	fmt.Println("Check traces on Google Cloud Trace")
 
-	err := tr.WithSpan(ctx, "service C",
+	err = tr.WithSpan(ctx, "service C",
 		func(ctx context.Context) error {
 			req, _ := http.NewRequest("GET", "http://104.154.145.107:7777/hello", nil)
 
