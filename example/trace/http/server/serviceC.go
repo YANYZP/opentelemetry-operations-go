@@ -89,6 +89,8 @@ func main() {
 	urlHandler := func(w http.ResponseWriter, req *http.Request) {
 		attrs, entries, spanCtx := httptrace.Extract(req.Context(), req)
 
+		fmt.Println("service C url", req.URL.Path)
+
 		itemVendorStr := req.URL.Path[1:] // item#vendor1#vendor2...
 		fmt.Println("service c: itemVendorStr = " + itemVendorStr)
 
