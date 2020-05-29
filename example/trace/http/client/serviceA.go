@@ -86,7 +86,7 @@ func main() {
 			panic(err)
 		}
 
-		fmt.Printf("Response Received:\n %s\n\n\n", body)
+		fmt.Printf("Response Received:\n%s\n\n\n", body)
 		fmt.Printf("Waiting for few seconds to export spans ...\n\n")
 		fmt.Println("Check traces on Google Cloud Trace")
 	}
