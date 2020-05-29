@@ -20,9 +20,9 @@ import (
 	"net/http"
 	"os"
 
+	"contrib.go.opencensus.io/exporter/stackdriver/propagation"
 	cloudtrace "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace"
 	"go.opencensus.io/plugin/ochttp"
-	"go.opencensus.io/trace/propagation"
 	"go.opentelemetry.io/otel/api/correlation"
 	"go.opentelemetry.io/otel/api/global"
 	"go.opentelemetry.io/otel/api/trace"
