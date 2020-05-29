@@ -135,7 +135,7 @@ func main() {
 
 		var body []byte
 
-		err := tr.WithSpan(ctx, "service B",
+		err := tr.WithSpan(ctx, "service C",
 			func(ctx context.Context) error {
 				req, _ := http.NewRequest("GET", "http://34.67.111.154:7777/"+URLStr, nil)
 

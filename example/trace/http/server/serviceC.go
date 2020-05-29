@@ -100,7 +100,7 @@ func main() {
 
 		ctx, span := tr.Start(
 			trace.ContextWithRemoteSpanContext(req.Context(), spanCtx),
-			"hello",
+			"serviceC span",
 			trace.WithAttributes(attrs...),
 		)
 		defer span.End()
@@ -131,7 +131,7 @@ func main() {
 			if !okok {
 				fmt.Println("service c: fail to find price of" + itemName + " in " + vendorName)
 			} else {
-				vendorPriceStrBuilder.WriteString(price + "dollar at" + vendorName + "\n")
+				vendorPriceStrBuilder.WriteString(price + " dollar at " + vendorName + "\n")
 			}
 
 		}
