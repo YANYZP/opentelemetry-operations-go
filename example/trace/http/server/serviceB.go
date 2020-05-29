@@ -59,8 +59,10 @@ func readFromFile(fileName string) map[string][]string {
 		words := strings.Fields(itemVendorInfo)
 		fmt.Println(itemVendorInfo)
 		for i := 1; i < len(words); i++ {
+			fmt.Println("vendor", words[i])
 			vendorOfItemMap[words[0]] = append(vendorOfItemMap[words[0]], words[i])
 		}
+		fmt.Println("vendor list", vendorOfItemMap[words[0]])
 	}
 
 	// for k, v := range vendorOfItemMap {
