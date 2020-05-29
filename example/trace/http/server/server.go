@@ -21,6 +21,8 @@ import (
 	"os"
 
 	cloudtrace "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace"
+	"go.opencensus.io/plugin/ochttp"
+	"go.opencensus.io/trace/propagation"
 	"go.opentelemetry.io/otel/api/correlation"
 	"go.opentelemetry.io/otel/api/global"
 	"go.opentelemetry.io/otel/api/trace"
@@ -77,8 +79,14 @@ func main() {
 	}
 
 	http.HandleFunc("/", urlHandler)
-	err := http.ListenAndServe(":7777", nil)
-	if err != nil {
+
+	// Use an ochttp.Handler in order to instrument OpenCensus for incoming
+	// requests.
+	httpHandler := &ochttp.Handler{
+		// Use the Google Cloud propagation format.
+		Propagation: &propagation.HTTPFormat{},
+	}
+	if err := http.ListenAndServe(":7777", httpHandler); err != nil {
 		panic(err)
 	}
 }
