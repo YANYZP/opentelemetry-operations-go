@@ -96,7 +96,7 @@ func main() {
 
 		ctx, span := tr.Start(
 			trace.ContextWithRemoteSpanContext(req.Context(), spanCtx),
-			"hello",
+			"serviceB span",
 			trace.WithAttributes(attrs...),
 		)
 		defer span.End()
@@ -135,7 +135,7 @@ func main() {
 
 		var body []byte
 
-		err := tr.WithSpan(ctx, "service C",
+		err := tr.WithSpan(ctx, "service B",
 			func(ctx context.Context) error {
 				req, _ := http.NewRequest("GET", "http://34.67.111.154:7777/"+URLStr, nil)
 
