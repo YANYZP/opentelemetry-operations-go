@@ -122,6 +122,10 @@ func main() {
 		URLStr := URLStrBuilder.String()
 		URLStr = URLStr[:len(URLStr)-1]
 
+		fmt.Println("vendorNameList", vendorNameList)
+
+		fmt.Println("sending url", URLStr, "to service c")
+
 		tr := global.TraceProvider().Tracer("cloudtrace/example/client")
 
 		client := http.DefaultClient
