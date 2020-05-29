@@ -1,0 +1,8 @@
+target milk 3
+walmart milk 2
+kroger milk 3
+costco toothpaste 2
+walmart toothpaste 2
+target toothpaste 2
+walmart napkins 4
+costco napkins 3 
