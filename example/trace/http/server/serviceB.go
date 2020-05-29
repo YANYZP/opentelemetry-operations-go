@@ -104,7 +104,7 @@ func main() {
 		vendorNameList, ok := vendorOfItemMap[ingredientName]
 
 		if !ok {
-			_, _ = io.WriteString(w, "There is no vendor information about "+ingredientName+"\n")
+			_, _ = io.WriteString(w, "Service B: No vendor info about "+ingredientName+"\n")
 			return
 		}
 
@@ -131,7 +131,7 @@ func main() {
 
 		err := tr.WithSpan(ctx, "service B",
 			func(ctx context.Context) error {
-				req, _ := http.NewRequest("GET", "http://34.72.29.104:7777/"+URLStr, nil)
+				req, _ := http.NewRequest("GET", "http://34.67.111.154:7777/"+URLStr, nil)
 
 				ctx, req = httptrace.W3C(ctx, req)
 				httptrace.Inject(ctx, req)

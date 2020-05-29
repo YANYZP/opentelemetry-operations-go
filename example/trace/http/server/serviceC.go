@@ -107,8 +107,6 @@ func main() {
 
 		infoArray := strings.Split(itemVendorStr, "#")
 
-		resultStrBuilder := strings.Builder{}
-
 		if len(infoArray) < 2 {
 			_, _ = io.WriteString(w, "Service C fails to find enough info\n")
 			return
