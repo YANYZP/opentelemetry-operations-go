@@ -112,11 +112,11 @@ func main() {
 
 		URLStrBuilder := strings.Builder{}
 		URLStrBuilder.WriteString(ingredientName)
-		URLStrBuilder.WriteString("#")
+		URLStrBuilder.WriteString("/")
 
 		for _, vendorName := range vendorNameList {
 			URLStrBuilder.WriteString(vendorName)
-			URLStrBuilder.WriteString("#")
+			URLStrBuilder.WriteString("/")
 		}
 
 		URLStr := URLStrBuilder.String()

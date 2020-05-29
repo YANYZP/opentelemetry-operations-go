@@ -107,7 +107,7 @@ func main() {
 
 		span.AddEvent(ctx, "handling this...")
 
-		infoArray := strings.Split(itemVendorStr, "#")
+		infoArray := strings.Split(itemVendorStr, "/")
 
 		if len(infoArray) < 2 {
 			_, _ = io.WriteString(w, "Service C fails to find enough info\n")
