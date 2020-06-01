@@ -65,7 +65,8 @@ func main() {
 
 		err := tr.WithSpan(ctx, "service A",
 			func(ctx context.Context) error {
-				req, _ := http.NewRequest("GET", "http://104.154.145.107:7777/"+ingredientName, nil)
+				// make sure the IP of service B
+				req, _ := http.NewRequest("GET", "http://35.192.101.15:7777/"+ingredientName, nil)
 
 				ctx, req = httptrace.W3C(ctx, req)
 				httptrace.Inject(ctx, req)
