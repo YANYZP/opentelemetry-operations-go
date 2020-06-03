@@ -79,10 +79,40 @@ func readFile(fileName string) map[string]map[string]string {
 	return itemPriceMap
 }
 
+func getPriceInfo(itemVendorStr string) string {
+	itemPriceMap := readFile("price.txt")
+	fmt.Println("service c: itemVendorStr = " + itemVendorStr)
+	infoArray := strings.Split(itemVendorStr, "/")
+
+	if len(infoArray) < 2 {
+		return "Service C fails to find enough info\n"
+	}
+	itemName := infoArray[0]
+
+	vendorPriceMap, ok := itemPriceMap[itemName]
+
+	if !ok {
+		return "Service C: Not finding vendors for this item\n"
+	}
+
+	vendorPriceStrBuilder := strings.Builder{}
+
+	for i := 1; i < len(infoArray); i++ {
+		vendorName := infoArray[i]
+		price, okok := vendorPriceMap[vendorName]
+
+		if !okok {
+			fmt.Println("service c: fail to find price of" + itemName + " in " + vendorName)
+		} else {
+			vendorPriceStrBuilder.WriteString(price + " dollar at " + vendorName + "\n")
+		}
+
+	}
+	return vendorPriceStrBuilder.String()
+}
+
 func main() {
 	initTracer()
-
-	itemPriceMap := readFile("price.txt")
 
 	tr := global.TraceProvider().Tracer("cloudtrace/example/server")
 
@@ -107,35 +137,7 @@ func main() {
 
 		span.AddEvent(ctx, "handling this...")
 
-		infoArray := strings.Split(itemVendorStr, "/")
-
-		if len(infoArray) < 2 {
-			_, _ = io.WriteString(w, "Service C fails to find enough info\n")
-			return
-		}
-		itemName := infoArray[0]
-
-		vendorPriceMap, ok := itemPriceMap[itemName]
-
-		if !ok {
-			_, _ = io.WriteString(w, "Service C: Not finding vendors for this item\n")
-			return
-		}
-
-		vendorPriceStrBuilder := strings.Builder{}
-
-		for i := 1; i < len(infoArray); i++ {
-			vendorName := infoArray[i]
-			price, okok := vendorPriceMap[vendorName]
-
-			if !okok {
-				fmt.Println("service c: fail to find price of" + itemName + " in " + vendorName)
-			} else {
-				vendorPriceStrBuilder.WriteString(price + " dollar at " + vendorName + "\n")
-			}
-
-		}
-		_, _ = io.WriteString(w, vendorPriceStrBuilder.String())
+		_, _ = io.WriteString(w, getPriceInfo(itemVendorStr))
 	}
 
 	http.HandleFunc("/", urlHandler)

@@ -78,6 +78,34 @@ func readFromFile(fileName string) map[string][]string {
 	return vendorOfItemMap
 }
 
+func generateURL(ingredientName string) (string, bool) {
+	vendorOfItemMap := readFromFile("vendor.txt")
+
+	vendorNameList, ok := vendorOfItemMap[ingredientName]
+
+	if !ok {
+		return "Service B: No vendor info about " + ingredientName + "\n", false
+	}
+
+	URLStrBuilder := strings.Builder{}
+	URLStrBuilder.WriteString(ingredientName)
+	URLStrBuilder.WriteString("/")
+
+	for _, vendorName := range vendorNameList {
+		URLStrBuilder.WriteString(vendorName)
+		URLStrBuilder.WriteString("/")
+	}
+
+	URLStr := URLStrBuilder.String()
+	URLStr = URLStr[:len(URLStr)-1]
+
+	fmt.Println("vendorNameList", vendorNameList)
+
+	fmt.Println("sending url", URLStr, "to service c")
+
+	return URLStr, true
+}
+
 func main() {
 	initTracer()
 
@@ -89,6 +117,13 @@ func main() {
 		attrs, entries, spanCtx := httptrace.Extract(req.Context(), req)
 
 		ingredientName := req.URL.Path[1:]
+
+		queryStr, isItemFound := generateURL(ingredientName)
+
+		if !isItemFound {
+			_, _ = io.WriteString(w, "Service B: No vendor info about "+ingredientName+"\n")
+			return
+		}
 
 		req = req.WithContext(correlation.ContextWithMap(req.Context(), correlation.NewMap(correlation.MapUpdate{
 			MultiKV: entries,
@@ -103,29 +138,6 @@ func main() {
 
 		span.AddEvent(ctx, "handling this...")
 
-		vendorNameList, ok := vendorOfItemMap[ingredientName]
-
-		if !ok {
-			_, _ = io.WriteString(w, "Service B: No vendor info about "+ingredientName+"\n")
-			return
-		}
-
-		URLStrBuilder := strings.Builder{}
-		URLStrBuilder.WriteString(ingredientName)
-		URLStrBuilder.WriteString("/")
-
-		for _, vendorName := range vendorNameList {
-			URLStrBuilder.WriteString(vendorName)
-			URLStrBuilder.WriteString("/")
-		}
-
-		URLStr := URLStrBuilder.String()
-		URLStr = URLStr[:len(URLStr)-1]
-
-		fmt.Println("vendorNameList", vendorNameList)
-
-		fmt.Println("sending url", URLStr, "to service c")
-
 		tr := global.TraceProvider().Tracer("cloudtrace/example/client")
 
 		client := http.DefaultClient
@@ -138,7 +150,7 @@ func main() {
 		err := tr.WithSpan(ctx, "service B",
 			func(ctx context.Context) error {
 				// make sure the IP of service C
-				req, _ := http.NewRequest("GET", "http://34.67.111.154:7777/"+URLStr, nil)
+				req, _ := http.NewRequest("GET", "http://34.67.111.154:7777/"+queryStr, nil)
 
 				ctx, req = httptrace.W3C(ctx, req)
 				httptrace.Inject(ctx, req)
