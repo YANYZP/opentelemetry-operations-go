@@ -109,8 +109,6 @@ func generateURL(ingredientName string) (string, bool) {
 func main() {
 	initTracer()
 
-	vendorOfItemMap := readFromFile("vendor.txt")
-
 	tr := global.TraceProvider().Tracer("cloudtrace/example/server")
 
 	urlHandler := func(w http.ResponseWriter, req *http.Request) {
