@@ -69,12 +69,12 @@ func main() {
 
 	err := tr.WithSpan(ctx, "service B",
 		func(ctx context.Context) error {
-			req, _ := http.NewRequest("GET", "http://104.154.145.107:7777/milk", nil)
+			req, _ := http.NewRequest("GET", "http://localhost:7777", nil)
 
 			ctx, req = httptrace.W3C(ctx, req)
 			httptrace.Inject(ctx, req)
 
-			fmt.Printf("Sending request to Service B ...\n")
+			fmt.Printf("Sending request to server ...\n")
 			res, err := client.Do(req)
 			if err != nil {
 				panic(err)
