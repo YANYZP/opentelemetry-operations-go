@@ -55,7 +55,7 @@ func main() {
 	// Initialization. In order to pass the credentials to the exporter,
 	// prepare credential file following the instruction described in this doc.
 	// https://pkg.go.dev/golang.org/x/oauth2/google?tab=doc#FindDefaultCredentials
-	opts := Option{
+	opts := Options{
 		ProjectID: "123",
 	}
 

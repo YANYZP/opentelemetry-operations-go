@@ -140,8 +140,8 @@ func NewExporter(o Options, popts... push.Option) (*Exporter, error) {
 	pusher, err := cloudmetric.InstallNewPipeline(
 		[]cloudmetric.Option{		
 			cloudmetric.WithProjectID(o.ProjectID), 
-			cloudmetric.WithInterval(o.Timeout), cloudmetric.WithOnError(o.OnError),		
-			cloudmetric.WithMetricDescriptorTypeFormatter(o.MetricDescriptorTypeFormatter),
+			// cloudmetric.WithInterval(o.Timeout), cloudmetric.WithOnError(o.OnError),		
+			// cloudmetric.WithMetricDescriptorTypeFormatter(o.MetricDescriptorTypeFormatter),
 			// cloudmetric.WithMonitoringClientOptions(o.MonitoringClientOptions), 
 		}, popts...,
 	)
