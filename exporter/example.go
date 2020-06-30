@@ -21,7 +21,6 @@ import (
 	"sync"
 	"time"
 
-	export "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter"
 
 	"go.opentelemetry.io/otel/api/kv"
 	"go.opentelemetry.io/otel/api/metric"
@@ -56,7 +55,7 @@ func main() {
 	// Initialization. In order to pass the credentials to the exporter,
 	// prepare credential file following the instruction described in this doc.
 	// https://pkg.go.dev/golang.org/x/oauth2/google?tab=doc#FindDefaultCredentials
-	opts := []export.Option{}
+	opts := []Option{}
 
 	// NOTE: In current implementation of exporter, this resource is ignored because
 	// the function to handle the common resource just ignore the passed resource and
@@ -69,7 +68,7 @@ func main() {
 		),
 	)
 
-	exporter, err := export.NewExporter(opts, resOpt)
+	exporter, err := NewExporter(opts, resOpt)
 	if err != nil {
 		log.Fatalf("Failed to establish pipeline: %v", err)
 	}
