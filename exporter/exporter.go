@@ -2,6 +2,7 @@ package exporter
 import (
 	"context"
 	"time"
+	"fmt"
 
 	sdk "go.opentelemetry.io/otel/sdk/metric"
 	apimetric "go.opentelemetry.io/otel/api/metric"
@@ -108,11 +109,13 @@ type Exporter struct {
 
 // extractResourceLabels extracts resources from the construction option
 func extractResourceLabels(popts ...push.Option) {
+	fmt.Println("extracting resources")
 	for _, popt := range popts {
 		var config push.Config
 		popt.Apply(&config)
 		if config.Resource.Len() > 0 {
 			for _, ele := range config.Resource.Attributes() {
+				fmt.Println(ele)
 				monitoredResLabelMap[string(ele.Key)] = ele.Value.AsString()
 			}
 		}
