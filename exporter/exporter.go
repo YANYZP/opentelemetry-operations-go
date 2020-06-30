@@ -126,9 +126,10 @@ func extractResourceLabels(popts ...push.Option) {
 // and metric.Exporter
 func NewExporter(o Options, popts... push.Option) (*Exporter, error) {
 
-	te, err := cloudtrace.NewExporter(cloudtrace.WithProjectID(o.ProjectID), cloudtrace.WithContext(o.Context),
-		cloudtrace.WithTraceClientOptions(o.TraceClientOptions), cloudtrace.WithTimeout(o.Timeout), 
-		cloudtrace.WithOnError(o.OnError),
+	te, err := cloudtrace.NewExporter(cloudtrace.WithProjectID(o.ProjectID), 
+	    // cloudtrace.WithContext(o.Context),
+		// cloudtrace.WithTraceClientOptions(o.TraceClientOptions), cloudtrace.WithTimeout(o.Timeout), 
+		// cloudtrace.WithOnError(o.OnError),
 	)
 	if err != nil {
 		return nil, err
