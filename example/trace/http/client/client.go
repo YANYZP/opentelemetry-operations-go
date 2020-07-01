@@ -25,7 +25,9 @@ import (
 	"time"
 
 	"google.golang.org/grpc/codes"
+	"go.opentelemetry.io/otel/api/kv"
 
+	"go.opentelemetry.io/otel/sdk/resource"
 	texporter "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace"
 	"go.opentelemetry.io/otel/api/correlation"
 	"go.opentelemetry.io/otel/api/global"
@@ -50,7 +52,9 @@ func initTracer() {
 	// For the demonstration, use sdktrace.AlwaysSample sampler to sample all traces.
 	// In a production application, use sdktrace.ProbabilitySampler with a desired probability.
 	tp, err := sdktrace.NewProvider(sdktrace.WithConfig(sdktrace.Config{DefaultSampler: sdktrace.AlwaysSample()}),
-		sdktrace.WithSyncer(exporter))
+		sdktrace.WithSyncer(exporter), sdktrace.WithResource(resource.New(
+			kv.String("application", "example-app"),
+		)))
 	if err != nil {
 		log.Fatal(err)
 	}

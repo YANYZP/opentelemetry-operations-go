@@ -50,6 +50,7 @@ func newTraceExporter(o *options) (*traceExporter, error) {
 
 // ExportSpan exports a SpanData to Stackdriver Trace.
 func (e *traceExporter) ExportSpan(ctx context.Context, sd *export.SpanData) {
+	fmt.Println("span resources", sd.Resource)
 	protoSpan := protoFromSpanData(sd, e.projectID)
 	e.uploadFn(ctx, []*tracepb.Span{protoSpan})
 }

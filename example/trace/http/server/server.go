@@ -26,6 +26,9 @@ import (
 	"go.opentelemetry.io/otel/api/trace"
 	"go.opentelemetry.io/otel/plugin/httptrace"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	"go.opentelemetry.io/otel/api/kv"
+
+	"go.opentelemetry.io/otel/sdk/resource"
 )
 
 func initTracer() {
@@ -43,7 +46,9 @@ func initTracer() {
 	// For the demonstration, use sdktrace.AlwaysSample sampler to sample all traces.
 	// In a production application, use sdktrace.ProbabilitySampler with a desired probability.
 	tp, err := sdktrace.NewProvider(sdktrace.WithConfig(sdktrace.Config{DefaultSampler: sdktrace.AlwaysSample()}),
-		sdktrace.WithSyncer(exporter))
+		sdktrace.WithSyncer(exporter), sdktrace.WithResource(resource.New(
+			kv.String("instance_id", "abc123"),
+		)))
 	if err != nil {
 		log.Fatal(err)
 	}
