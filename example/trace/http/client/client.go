@@ -25,7 +25,6 @@ import (
 	"time"
 
 	"google.golang.org/grpc/codes"
-	"go.opentelemetry.io/otel/api/kv"
 
 	"go.opentelemetry.io/otel/sdk/resource"
 	texporter "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/trace"
