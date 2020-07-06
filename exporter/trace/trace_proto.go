@@ -60,10 +60,20 @@ const (
 
 var userAgent = fmt.Sprintf("opentelemetry-go %s; cloudtrace-exporter %s", opentelemetry.Version(), version)
 
+func injectLabelsFromResources(sd *export.SpanData) {
+	if sd.Resource.Len() > 0 {
+		for _, ele := range sd.Resource.Attributes() {
+			sd.Attributes = append(sd.Attributes, ele)
+		}
+	}
+}
+
 func protoFromSpanData(s *export.SpanData, projectID string) *tracepb.Span {
 	if s == nil {
 		return nil
 	}
+	
+	injectLabelsFromResources(s)
 
 	traceIDString := s.SpanContext.TraceID.String()
 	spanIDString := s.SpanContext.SpanID.String()
