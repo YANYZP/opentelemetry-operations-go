@@ -81,7 +81,7 @@ func main() {
 	meter := pusher.Provider().Meter("cloudmonitoring/example")
 
 	detectedRes, err := auto.Detect(ctx)
-	log.Printf(detectedRes)
+	log.Printf(detectedRes.Type, detectedRes.Labels)
 
 	// Register counter value
 	counter := metric.Must(meter).NewInt64Counter("counter-a")
