@@ -22,6 +22,7 @@ import (
 	"time"
 
 	mexporter "github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric"
+	"contrib.go.opencensus.io/resource/auto"
 
 	"go.opentelemetry.io/otel/api/kv"
 	"go.opentelemetry.io/otel/api/metric"
@@ -74,9 +75,13 @@ func main() {
 	}
 	defer pusher.Stop()
 
+
 	// Start meter
 	ctx := context.Background()
 	meter := pusher.Provider().Meter("cloudmonitoring/example")
+
+	detectedRes, err := auto.Detect(ctx)
+	log.Printf(detectedRes)
 
 	// Register counter value
 	counter := metric.Must(meter).NewInt64Counter("counter-a")
