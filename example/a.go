@@ -1,5 +1,5 @@
 package a
 
-func fa() int {
+func Fa() int {
 	return 2 + 3
 }
