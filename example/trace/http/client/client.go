@@ -52,9 +52,9 @@ func initTracer() {
 	// In a production application, use sdktrace.ProbabilitySampler with a desired probability.
 	tp, err := sdktrace.NewProvider(sdktrace.WithConfig(sdktrace.Config{DefaultSampler: sdktrace.AlwaysSample()}),
 		sdktrace.WithSyncer(exporter), sdktrace.WithResource(resource.New(
-			kv.String("application", "example-app"),
-			kv.String("application", "example-app"),
-			kv.String("application", "example-app"),
+			kv.String("application", "example-app1"),
+			kv.String("application", "example-app2"),
+			kv.String("application", "example-app3"),
 			kv.String("application1", "example-app"),
 		)))
 	if err != nil {
