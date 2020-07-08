@@ -60,19 +60,23 @@ const (
 
 var userAgent = fmt.Sprintf("opentelemetry-go %s; cloudtrace-exporter %s", opentelemetry.Version(), version)
 
-
 func injectLabelsFromResources(sd *export.SpanData) {
-	existingAttrs := make(map[kv.KeyValue]bool)
+	if sd.Resource.Len() == 0 {
+		return
+	}
+	uniqueAttrs := make(map[kv.Key]bool, len(sd.Attributes))
 	for _, attr := range sd.Attributes {
-		existingAttrs[attr] = true	
+		uniqueAttrs[attr.Key] = true	
 	}
 	for _, attr := range sd.Resource.Attributes() {
-		if !existingAttrs[attr] {
-			existingAttrs[attr] = true	
-			sd.Attributes = append(sd.Attributes, attr)
+		if uniqueAttrs[attr.Key] {
+			continue // skip resource attributes which conflict with span attributes
 		}
+		uniqueAttrs[attr.Key] = true	
+		sd.Attributes = append(sd.Attributes, attr)
 	}
 }
+
 
 func protoFromSpanData(s *export.SpanData, projectID string) *tracepb.Span {
 	if s == nil {
