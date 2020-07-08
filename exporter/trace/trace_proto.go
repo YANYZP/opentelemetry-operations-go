@@ -69,6 +69,7 @@ func injectLabelsFromResources(sd *export.SpanData) {
 		uniqueAttrs[attr.Key] = true	
 	}
 	for _, attr := range sd.Resource.Attributes() {
+		fmt.Println(attr)
 		if uniqueAttrs[attr.Key] {
 			continue // skip resource attributes which conflict with span attributes
 		}
