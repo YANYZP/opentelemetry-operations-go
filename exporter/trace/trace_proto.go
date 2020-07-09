@@ -73,7 +73,7 @@ func generateDisplayName(s *export.SpanData, format DisplayNameFormatter) string
 
 
 // If there are duplicate keys present in the list of attributes, 
-// then the first value found for the key is preserved.
+// then the last value found for the key is preserved.
 func injectLabelsFromResources(sd *export.SpanData) {
 	if sd.Resource.Len() == 0 {
 		return
